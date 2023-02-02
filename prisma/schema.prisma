@@ -11,9 +11,8 @@ datasource db {
 }
 
 model User {
-  id              String     @id @default(uuid())
+  username        String     @id
   name            String
-  username        String     @unique
   email           String     @unique
   password        String
   ownCalendars    Calendar[] @relation("OwnCalendars")
@@ -26,11 +25,11 @@ model Calendar {
   id            String          @id @default(uuid())
   name          String
   CalendarEvent CalendarEvent[]
-  owner         User            @relation("OwnCalendars", fields: [ownerId], references: [id])
-  ownerId       String
+  owner         User            @relation("OwnCalendars", fields: [ownerUsername], references: [username])
+  ownerUsername String
   sharedTo      User[]
 
-  @@unique([name, ownerId])
+  @@unique([name, ownerUsername])
 }
 
 model CalendarEvent {
