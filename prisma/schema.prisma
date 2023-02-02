@@ -22,7 +22,7 @@ model User {
 }
 
 model Calendar {
-  id            String          @id @default(uuid())
+  id            String          @id @default(cuid())
   name          String
   CalendarEvent CalendarEvent[]
   owner         User            @relation("OwnCalendars", fields: [ownerUsername], references: [username])
@@ -33,7 +33,7 @@ model Calendar {
 }
 
 model CalendarEvent {
-  id          String   @id @default(uuid())
+  id          String   @id @default(cuid())
   title       String
   description String
   startTime   DateTime
