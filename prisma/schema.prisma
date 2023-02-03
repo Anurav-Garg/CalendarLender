@@ -25,7 +25,7 @@ model Calendar {
   id            String          @id @default(cuid())
   name          String
   CalendarEvent CalendarEvent[]
-  owner         User            @relation("OwnCalendars", fields: [ownerUsername], references: [username])
+  owner         User            @relation("OwnCalendars", fields: [ownerUsername], references: [username], onDelete: Cascade)
   ownerUsername String
   sharedTo      User[]
 
@@ -38,7 +38,7 @@ model CalendarEvent {
   description String
   startTime   DateTime
   endTime     DateTime
-  calendar    Calendar @relation(fields: [calendarId], references: [id])
+  calendar    Calendar @relation(fields: [calendarId], references: [id], onDelete: Cascade)
   calendarId  String
 
   @@unique([title, calendarId])
