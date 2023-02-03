@@ -46,18 +46,8 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
-// app.get("/test", (req: Request, res: Response) => {
-//   const session = req.session;
-//   if (!session.count) {
-//     session.count = 1;
-//     res.status(200).json({ message: "This is your first time visiting!" });
-//   } else {
-//     session.count++;
-//     res
-//       .status(200)
-//       .json({ message: `You have visited us ${session.count} times!` });
-//   }
-// });
+import userRouter from "./routes/users";
+app.use("/users", userRouter);
 
 app.listen(port, () => {
   console.log("Server started on port " + port);
