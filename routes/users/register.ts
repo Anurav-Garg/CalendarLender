@@ -5,6 +5,8 @@ import { hash } from "bcryptjs";
 import sgMail from "@sendgrid/mail";
 import * as dotenv from "dotenv";
 import { randomBytes } from "crypto";
+import UserSchema from "../../types/zodSchemas/user";
+import { fromZodError } from "zod-validation-error";
 dotenv.config();
 
 sgMail.setApiKey(process.env.EMAIL_API_KEY as string);
@@ -18,9 +20,12 @@ export default async function (req: Request, res: Response) {
     username: user.username,
   } = req.body);
 
-  if (!(user.username && user.password && user.email && user.name)) {
+  const parsed = UserSchema.safeParse(user);
+
+  if (!parsed.success) {
     res.status(400).json({
-      message: "All user info parameters are required",
+      message: "Invalid input",
+      error: fromZodError(parsed.error),
     });
     return;
   }
