@@ -17,7 +17,7 @@ export default async function (req: Request, res: Response) {
   });
 
   if (!event) {
-    res.status(400).json({
+    res.status(404).json({
       message: "Invalid event ID",
     });
     return;

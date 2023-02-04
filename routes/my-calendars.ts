@@ -29,7 +29,7 @@ async function authorize(
   });
 
   if (!calendar) {
-    res.status(400).json({ message: "Invalid calendar ID" });
+    res.status(404).json({ message: "Invalid calendar ID" });
     return;
   }
 

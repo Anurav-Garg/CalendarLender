@@ -21,7 +21,7 @@ export default async function (req: Request, res: Response) {
   });
 
   if (!existingUser) {
-    res.status(400).json({ message: `No user found with email "${email}"` });
+    res.status(404).json({ message: `No user found with email "${email}"` });
     return;
   }
 
