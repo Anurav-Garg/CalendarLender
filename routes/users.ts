@@ -1,4 +1,5 @@
 import express from "express";
+import authenticate from "../lib/authenticate";
 import {
   register,
   getUserDetails,
@@ -12,13 +13,15 @@ const router: express.Router = express.Router();
 
 router.post("/", register);
 
+router.post("/login", login);
+
+router.use(authenticate);
+
 router.get("/", getUserDetails);
 
 router.delete("/", deleteUser);
 
 router.patch("/", updateUser);
-
-router.post("/login", login);
 
 router.delete("/login", logout);
 

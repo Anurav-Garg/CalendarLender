@@ -3,16 +3,9 @@ import { Request, Response } from "express";
 import { prisma } from "../../lib/initializeClients";
 
 export default async function (req: Request, res: Response) {
-  if (!req.session.auth) {
-    res
-      .status(401)
-      .json({ message: "User not logged in, or session was timed out." });
-    return;
-  }
-
   const user: User = await prisma.user.delete({
     where: {
-      username: req.session.auth.username,
+      username: req.session.auth?.username,
     },
   });
 

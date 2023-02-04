@@ -6,13 +6,6 @@ import { prisma } from "../../lib/initializeClients";
 import UserSchema from "../../types/zodSchemas/user";
 
 export default async function (req: Request, res: Response) {
-  if (!req.session.auth) {
-    res
-      .status(401)
-      .json({ message: "User not logged in, or session was timed out." });
-    return;
-  }
-
   const user = { name: "", password: "", username: "", email: "" };
   ({
     name: user.name,
@@ -36,7 +29,7 @@ export default async function (req: Request, res: Response) {
     return;
   }
 
-  if (user.username && user.username !== req.session.auth.username) {
+  if (user.username && user.username !== req.session.auth?.username) {
     const existingUser: User | null = await prisma.user.findUnique({
       where: { username: user.username },
     });
@@ -48,7 +41,7 @@ export default async function (req: Request, res: Response) {
   }
 
   const oldUser: User | null = await prisma.user.findUnique({
-    where: { username: req.session.auth.username },
+    where: { username: req.session.auth?.username },
   });
 
   if (!oldUser) {
@@ -62,7 +55,7 @@ export default async function (req: Request, res: Response) {
   const name = user.name || oldUser.name;
 
   const newUser: User = await prisma.user.update({
-    where: { username: req.session.auth.username },
+    where: { username: req.session.auth?.username },
     data: { username: username, name: name, password: password },
   });
 
