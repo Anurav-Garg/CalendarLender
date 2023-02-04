@@ -5,7 +5,7 @@ import { prisma } from "../../lib/initializeClients";
 export default async function (req: Request, res: Response) {
   const user: User | null = await prisma.user.findUnique({
     where: {
-      username: req.session.auth?.username,
+      username: req.username,
     },
   });
 

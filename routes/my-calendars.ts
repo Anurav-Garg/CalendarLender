@@ -33,7 +33,7 @@ async function authorize(
     return;
   }
 
-  if (calendar.ownerUsername !== req.session.auth?.username) {
+  if (calendar.ownerUsername !== req.username) {
     res.status(403).json({ message: "User does not own this calendar" });
     return;
   }

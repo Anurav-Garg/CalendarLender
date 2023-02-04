@@ -6,7 +6,7 @@ import CalendarSchema from "../../types/zodSchemas/calendar";
 
 export default async function (req: Request, res: Response) {
   const { name }: { name: string } = req.body;
-  const username: string = req.session.auth?.username as string;
+  const username: string = req.username as string;
 
   const parsed = CalendarSchema.safeParse({
     name: name,

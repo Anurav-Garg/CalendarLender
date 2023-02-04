@@ -1,7 +1,10 @@
 import { User } from "@prisma/client";
 import { compare } from "bcryptjs";
 import { Request, Response } from "express";
-import { prisma } from "../../lib/initializeClients";
+import { prisma, redisClient } from "../../lib/initializeClients";
+import { sign } from "jsonwebtoken";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 export default async function (req: Request, res: Response) {
   const {
@@ -30,10 +33,22 @@ export default async function (req: Request, res: Response) {
     return;
   }
 
-  req.session.regenerate((err) => {
-    req.session.auth = { username: existingUser.username };
-    res
-      .status(200)
-      .json({ message: "Logged in and created session successfully" });
-  });
+  const token: string = sign(
+    { username: existingUser.username },
+    process.env.TOKEN_KEY as string,
+    {
+      expiresIn: 10 * 60,
+    }
+  );
+
+  await redisClient.set(token, 1, { EX: 10 * 60 });
+
+  if (req.cookies.token) {
+    await redisClient.del(req.cookies.token);
+  }
+
+  res.cookie("token", token);
+  res
+    .status(200)
+    .json({ message: "Logged in and created session successfully" });
 }

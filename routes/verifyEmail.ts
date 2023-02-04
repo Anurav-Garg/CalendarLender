@@ -63,12 +63,9 @@ export default async function (
     },
   });
 
-  req.session.regenerate(() => {
-    req.session.auth = { username: user.username };
-    res.status(201).json({
-      username: newUser.username,
-      email: newUser.email,
-      name: newUser.name,
-    });
+  res.status(201).json({
+    username: newUser.username,
+    email: newUser.email,
+    name: newUser.name,
   });
 }
