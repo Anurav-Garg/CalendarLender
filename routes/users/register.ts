@@ -2,6 +2,23 @@ import { User } from "@prisma/client";
 import { Request, Response } from "express";
 import prisma from "../../prisma/client";
 import { hash } from "bcryptjs";
+import sgMail from "@sendgrid/mail";
+import * as dotenv from "dotenv";
+import { randomBytes } from "crypto";
+import { createClient } from "redis";
+dotenv.config();
+
+sgMail.setApiKey(process.env.EMAIL_API_KEY as string);
+
+const redisClient = createClient();
+
+redisClient.on("error", function (err) {
+  console.log("Could not establish a connection with redis. " + err);
+});
+redisClient.on("connect", function (err) {
+  console.log("Connected to redis successfully");
+});
+redisClient.connect();
 
 export default async function (req: Request, res: Response) {
   const user: User = { name: "", email: "", password: "", username: "" };
@@ -38,20 +55,33 @@ export default async function (req: Request, res: Response) {
   }
 
   const hashedPassword: string = await hash(user.password, 10);
+  user.password = hashedPassword;
+  const token: string = randomBytes(48).toString("hex");
 
-  const newUser: User = await prisma.user.create({
-    data: {
-      email: user.email,
-      password: hashedPassword,
-      name: user.name,
-      username: user.username,
+  await redisClient.set(token, JSON.stringify(user), { EX: 60 * 60 });
+
+  const msg = {
+    to: user.email,
+    from: process.env.VERIFIED_EMAIL as string,
+    subject: "Verify your CalendarLender API Account",
+    html: `<a href="http://localhost:3000/verify?token=${token}">Verify Registration</a>`,
+  };
+
+  sgMail.send(msg).then(
+    () => {
+      console.log("Email sent, hopefully");
+      console.log(msg);
     },
-  });
+    (error) => {
+      console.error(error);
 
-  req.session.regenerate((err) => {
-    req.session.auth = { username: user.username };
-    res
-      .status(201)
-      .json({ username: user.username, email: user.email, name: user.name });
-  });
+      if (error.response) {
+        console.error(error.response.body);
+      }
+    }
+  );
+
+  res
+    .status(200)
+    .json({ message: "Registration successful, awaiting validation" });
 }
