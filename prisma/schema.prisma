@@ -40,6 +40,4 @@ model CalendarEvent {
   endTime     DateTime
   calendar    Calendar @relation(fields: [calendarId], references: [id], onDelete: Cascade)
   calendarId  String
-
-  @@unique([title, calendarId])
 }
