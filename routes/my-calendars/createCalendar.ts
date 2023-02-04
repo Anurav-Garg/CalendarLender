@@ -1,13 +1,21 @@
 import { Calendar } from "@prisma/client";
 import { Request, Response } from "express";
+import { fromZodError } from "zod-validation-error";
 import { prisma } from "../../lib/initializeClients";
+import CalendarSchema from "../../types/zodSchemas/calendar";
 
 export default async function (req: Request, res: Response) {
   const { name }: { name: string } = req.body;
   const username: string = req.session.auth?.username as string;
-  if (!name) {
+
+  const parsed = CalendarSchema.safeParse({
+    name: name,
+  });
+
+  if (!parsed.success) {
     res.status(400).json({
-      message: "Calendar name is required",
+      message: "Invalid input",
+      error: fromZodError(parsed.error),
     });
     return;
   }
