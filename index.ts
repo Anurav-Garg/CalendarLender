@@ -49,6 +49,9 @@ app.get("/", (req: Request, res: Response) => {
 import userRouter from "./routes/users";
 app.use("/users", userRouter);
 
+import myCalendarsRouter from "./routes/my-calendars";
+app.use("/my-calendars", myCalendarsRouter);
+
 app.listen(port, () => {
   console.log("Server started on port " + port);
 });
