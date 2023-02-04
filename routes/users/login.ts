@@ -3,28 +3,25 @@ import { compare } from "bcryptjs";
 import { Request, Response } from "express";
 import prisma from "../../prisma/client";
 
-export default async function(req: Request, res: Response){
+export default async function (req: Request, res: Response) {
   const {
-    username,
+    email,
     password,
-  }: { username: string | undefined; password: string | undefined } = req.body;
+  }: { email: string | undefined; password: string | undefined } = req.body;
 
-  if (!(username && password)) {
+  if (!(email && password)) {
     res.status(400).json({
-      message:
-        "Both Username and Password are required, as well as Application/JSON header",
+      message: "Both Email and Password are required",
     });
     return;
   }
 
   const existingUser: User | null = await prisma.user.findUnique({
-    where: { username: username },
+    where: { email: email },
   });
 
   if (!existingUser) {
-    res
-      .status(400)
-      .json({ message: `No user found with username "${username}"` });
+    res.status(400).json({ message: `No user found with email "${email}"` });
     return;
   }
 
@@ -34,7 +31,7 @@ export default async function(req: Request, res: Response){
   }
 
   req.session.regenerate((err) => {
-    req.session.auth = { username: username };
+    req.session.auth = { username: existingUser.username };
     res
       .status(200)
       .json({ message: "Logged in and created session successfully" });
