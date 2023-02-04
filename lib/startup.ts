@@ -17,10 +17,12 @@ const redisClientLegacy = createClient({
 });
 
 redisClientLegacy.on("error", function (err) {
-  console.log("Could not establish a connection with redis. " + err);
+  console.log(
+    "Session Client: Could not establish a connection with redis. " + err
+  );
 });
 redisClientLegacy.on("connect", function (err) {
-  console.log("Connected to redis successfully");
+  console.log("Session Client: Connected to redis successfully");
 });
 redisClientLegacy.connect();
 
@@ -39,4 +41,4 @@ app.use(
   })
 );
 
-export {app};
+export { app };

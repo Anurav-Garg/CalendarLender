@@ -6,10 +6,12 @@ const prisma: PrismaClient = new PrismaClient();
 const redisClient = createClient();
 
 redisClient.on("error", function (err) {
-  console.log("Could not establish a connection with redis. " + err);
+  console.log(
+    "Main Client: Could not establish a connection with redis. " + err
+  );
 });
 redisClient.on("connect", function (err) {
-  console.log("Connected to redis successfully");
+  console.log("Main Client: Connected to redis successfully");
 });
 redisClient.connect();
 
