@@ -52,6 +52,9 @@ app.use("/users", userRouter);
 import myCalendarsRouter from "./routes/my-calendars";
 app.use("/my-calendars", myCalendarsRouter);
 
+import verifyEmail from "./routes/verifyEmail";
+app.get("/verify", verifyEmail);
+
 app.listen(port, () => {
   console.log("Server started on port " + port);
 });
