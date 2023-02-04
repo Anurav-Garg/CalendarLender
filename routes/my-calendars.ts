@@ -5,7 +5,7 @@ import {
   getAllCalendars,
   calendarIdRouter,
 } from "./my-calendars/index";
-import { default as auth } from "./_authenticate";
+import { default as auth } from "../lib/authenticate";
 
 const router: express.Router = express.Router();
 
