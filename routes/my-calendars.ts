@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import prisma from "../prisma/client";
+import { prisma } from "../lib/initializeClients";
 import {
   createCalendar,
   getAllCalendars,

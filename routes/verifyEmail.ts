@@ -1,19 +1,8 @@
 import { Request, Response } from "express";
-import { createClient } from "redis";
-import prisma from "../prisma/client";
+import { prisma, redisClient } from "../lib/initializeClients";
 import { User } from "@prisma/client";
 import * as dotenv from "dotenv";
 dotenv.config();
-
-const redisClient = createClient();
-
-redisClient.on("error", function (err) {
-  console.log("Could not establish a connection with redis. " + err);
-});
-redisClient.on("connect", function (err) {
-  console.log("Connected to redis successfully");
-});
-redisClient.connect();
 
 interface RequestParams {}
 interface ResponseBody {}

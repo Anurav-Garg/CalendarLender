@@ -1,7 +1,7 @@
 import { User } from "@prisma/client";
 import { compare } from "bcryptjs";
 import { Request, Response } from "express";
-import prisma from "../../prisma/client";
+import { prisma } from "../../lib/initializeClients";
 
 export default async function (req: Request, res: Response) {
   const {

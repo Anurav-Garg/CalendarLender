@@ -1,24 +1,13 @@
 import { User } from "@prisma/client";
 import { Request, Response } from "express";
-import prisma from "../../prisma/client";
+import { prisma, redisClient } from "../../lib/initializeClients";
 import { hash } from "bcryptjs";
 import sgMail from "@sendgrid/mail";
 import * as dotenv from "dotenv";
 import { randomBytes } from "crypto";
-import { createClient } from "redis";
 dotenv.config();
 
 sgMail.setApiKey(process.env.EMAIL_API_KEY as string);
-
-const redisClient = createClient();
-
-redisClient.on("error", function (err) {
-  console.log("Could not establish a connection with redis. " + err);
-});
-redisClient.on("connect", function (err) {
-  console.log("Connected to redis successfully");
-});
-redisClient.connect();
 
 export default async function (req: Request, res: Response) {
   const user: User = { name: "", email: "", password: "", username: "" };
