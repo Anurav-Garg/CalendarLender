@@ -5,11 +5,11 @@ import {
   getAllCalendars,
   calendarIdRouter,
 } from "./my-calendars/index";
-import { default as auth } from "../lib/authenticate";
+import { default as authenticate } from "../lib/authenticate";
 
 const router: express.Router = express.Router();
 
-router.use(auth);
+router.use(authenticate);
 
 router.post("/", createCalendar);
 
