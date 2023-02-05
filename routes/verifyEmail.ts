@@ -21,9 +21,6 @@ export default async function (
     return;
   }
 
-  // TEMP:
-  console.log(token);
-
   const userString: string | null = await redisClient.get(token);
   await redisClient.del(token);
 
