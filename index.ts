@@ -16,8 +16,17 @@ app.use("/users", userRouter);
 import myCalendarsRouter from "./routes/my-calendars";
 app.use("/my-calendars", myCalendarsRouter);
 
+import sharedCalendarsRouter from "./routes/shared-calendars";
+app.use("/shared-calendars", sharedCalendarsRouter);
+
 import verifyEmail from "./routes/verifyEmail";
 app.get("/verify", verifyEmail);
+
+import authenticate from "./lib/authenticate";
+app.use(authenticate);
+
+import acceptInvite from "./routes/acceptInvite";
+app.get("/accept-invite", acceptInvite);
 
 app.listen(port, () => {
   console.log("Server started on port " + port);
