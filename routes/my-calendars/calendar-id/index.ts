@@ -8,6 +8,8 @@ import {
 export { default as getCalendarDetails } from "./getCalendarDetails";
 export { default as deleteCalendar } from "./deleteCalendar";
 export { default as renameCalendar } from "./renameCalendar";
+export { default as shareCalendar } from "./shareCalendar";
+export { default as unshareCalendar } from "./unshareCalendar";
 
 const eventRouter: express.Router = express.Router();
 
