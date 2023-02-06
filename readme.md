@@ -1,8 +1,10 @@
 # CalendarLender
 
-A calendar API made using Express.js and Typescript, with a PostgreSQL + Redis backend, for CrUX inductions round 3. This will probably never be updated after the inductions.
+A calendar API made using Express.js and Typescript, with a PostgreSQL + Redis backend, for CrUX inductions round 3. This is not hosted anywhere, and will probably never be updated after the inductions.
 
 ## API Reference
+
+Prepend the backend URL before these routes, of course.
 
 ### /users
 
