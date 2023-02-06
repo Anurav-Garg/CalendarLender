@@ -38,11 +38,11 @@ export default async function (
       { username: decoded.username },
       process.env.TOKEN_KEY as string,
       {
-        expiresIn: 10 * 60,
+        expiresIn: parseInt(process.env.SESSION_TIMEOUT as string),
       }
     );
 
-    await redisClient.set(token, 1, { EX: 10 * 60 });
+    await redisClient.set(token, 1, { EX: parseInt(process.env.SESSION_TIMEOUT as string) });
 
     res.cookie("token", token);
     req.cookies.token = token;
